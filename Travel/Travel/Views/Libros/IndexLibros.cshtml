@@ -1,0 +1,85 @@
+﻿@model Travel.Models.LibrosViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IndexLibros</title>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container" style="width:40%; margin-top:2%"> 
+        <table class="table table-responsive">
+            <tr>
+                @*<th>Editorial</th>*@
+                <th>Titulo</th>
+                <th>Sinopsis</th>
+                <th>Npagina</th>
+            </tr>
+
+            <tbody>
+                @if (ViewBag.listLibros != null)
+                {
+                    foreach (var item in ViewBag.listLibros)
+                    {
+                <tr>
+                    @*<td>@item.IdEditorial</td>*@
+                    <td>@item.Titulo</td>
+                    <td>@item.Sinopsis</td>
+                    <td>@item.NPaginas</td>
+
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Editoriales.Nombre)
+                    </td>*@
+
+                    <td>
+                        <a href="#" class="btn btn-success" onclick="AddEditLibros(@item.IdLibro)"></a>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-success" onclick="DeleteLibro(@item.IdLibro)"></a>
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </td>
+                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <a href="#" class="btn btn-primary" onclick="AddEditLibros(0)">New</a>
+        <div class="model fade" id="myModal">
+            <div class="modal-dialog">
+                <div class=" modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal"></a>
+                        <h3 class="modal-title">Curso</h3>
+                    </div>
+                    <div class="modal-body" id="ModalBody"></div>
+                  </div>
+                <div>
+            </div>
+        </div>
+         <input type="hidden" id="hiddenIdcuros" />
+    </div>
+
+<script>
+    var AddEditLibros = function (IdLibro)
+    {
+        var url = "/Libros/AddEditLibros?IdLibro=" + IdLibro;
+        $("#ModalBody").load(url, function ()
+        {
+            $("#myModal").modal("show");
+        })
+    }
+</script>
+
+</body>
+</html>
+

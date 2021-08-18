@@ -1,0 +1,43 @@
+﻿@model Travel.Models.Libros
+
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(m => m.IdLibro)
+
+        @Html.DropDownListFor(model => model.IdEditorial, ViewBag.IdEditorial as SelectList,
+                             "-- Select", new { @class = "form-control"})
+
+        @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", @placeholder = "Titulo" })
+
+        @Html.TextBoxFor(model => model.Sinopsis, new { @class = "form-control", @placeholder = "Sinopsis" })
+
+        @Html.TextBoxFor(model => model.NPaginas, new { @class = "form-control", @placeholder = "NPaginas" })
+
+    </form>
+
+    <div style="text-align:center;display:none" id="loaderDiv">
+        <img src="~/Content/loading.gif" />
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            $("#loaderDiv").show();
+            var myformdata = $("#myForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Libros/SaveEditLibros",
+                data: myformdata,
+                success: function ()
+                {
+                    $("#loaderDiv").hide();
+                    $("#myModal").modal("hide");
+                    window.location.href = "/Libros/SaveEditLibros";
+                }
+            })
+        })
+
+    })
+
+
+    </script>

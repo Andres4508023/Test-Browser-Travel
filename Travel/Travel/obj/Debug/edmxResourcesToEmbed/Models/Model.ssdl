@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TravelModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="autores">
+    <Key>
+      <PropertyRef Name="IdAutor" />
+    </Key>
+    <Property Name="IdAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombres" Type="varchar" MaxLength="45" />
+    <Property Name="Apellidos" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="Autores_Has_Libros">
+    <Key>
+      <PropertyRef Name="IdAutorLibro" />
+    </Key>
+    <Property Name="IdAutorLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_Autor" Type="int" />
+    <Property Name="Id_Libro" Type="int" />
+  </EntityType>
+  <EntityType Name="Editoriales">
+    <Key>
+      <PropertyRef Name="IdEditorial" />
+    </Key>
+    <Property Name="IdEditorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="45" />
+    <Property Name="Sede" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="Libros">
+    <Key>
+      <PropertyRef Name="IdLibro" />
+    </Key>
+    <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdEditorial" Type="int" />
+    <Property Name="Titulo" Type="varchar" MaxLength="45" />
+    <Property Name="Sinopsis" Type="varchar" MaxLength="45" />
+    <Property Name="NPaginas" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <Association Name="FK_Autores_Has_Libros_autores">
+    <End Role="autores" Type="Self.autores" Multiplicity="0..1" />
+    <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="autores">
+        <PropertyRef Name="IdAutor" />
+      </Principal>
+      <Dependent Role="Autores_Has_Libros">
+        <PropertyRef Name="Id_Autor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Autores_Has_Libros_Libros">
+    <End Role="Libros" Type="Self.Libros" Multiplicity="0..1" />
+    <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Libros">
+        <PropertyRef Name="IdLibro" />
+      </Principal>
+      <Dependent Role="Autores_Has_Libros">
+        <PropertyRef Name="Id_Libro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Libros_Editoriales">
+    <End Role="Editoriales" Type="Self.Editoriales" Multiplicity="0..1" />
+    <End Role="Libros" Type="Self.Libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editoriales">
+        <PropertyRef Name="IdEditorial" />
+      </Principal>
+      <Dependent Role="Libros">
+        <PropertyRef Name="IdEditorial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TravelModelStoreContainer">
+    <EntitySet Name="autores" EntityType="Self.autores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Autores_Has_Libros" EntityType="Self.Autores_Has_Libros" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Editoriales" EntityType="Self.Editoriales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Libros" EntityType="Self.Libros" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Autores_Has_Libros_autores" Association="Self.FK_Autores_Has_Libros_autores">
+      <End Role="autores" EntitySet="autores" />
+      <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Autores_Has_Libros_Libros" Association="Self.FK_Autores_Has_Libros_Libros">
+      <End Role="Libros" EntitySet="Libros" />
+      <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Libros_Editoriales" Association="Self.FK_Libros_Editoriales">
+      <End Role="Editoriales" EntitySet="Editoriales" />
+      <End Role="Libros" EntitySet="Libros" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

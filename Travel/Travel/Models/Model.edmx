@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TravelModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="autores">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombres" Type="varchar" MaxLength="45" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="Autores_Has_Libros">
+          <Key>
+            <PropertyRef Name="IdAutorLibro" />
+          </Key>
+          <Property Name="IdAutorLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Autor" Type="int" />
+          <Property Name="Id_Libro" Type="int" />
+        </EntityType>
+        <EntityType Name="Editoriales">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="45" />
+          <Property Name="Sede" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="Libros">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdEditorial" Type="int" />
+          <Property Name="Titulo" Type="varchar" MaxLength="45" />
+          <Property Name="Sinopsis" Type="varchar" MaxLength="45" />
+          <Property Name="NPaginas" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <Association Name="FK_Autores_Has_Libros_autores">
+          <End Role="autores" Type="Self.autores" Multiplicity="0..1" />
+          <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="autores">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Autores_Has_Libros">
+              <PropertyRef Name="Id_Autor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Autores_Has_Libros_Libros">
+          <End Role="Libros" Type="Self.Libros" Multiplicity="0..1" />
+          <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="Autores_Has_Libros">
+              <PropertyRef Name="Id_Libro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Libros_Editoriales">
+          <End Role="Editoriales" Type="Self.Editoriales" Multiplicity="0..1" />
+          <End Role="Libros" Type="Self.Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editoriales">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libros">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TravelModelStoreContainer">
+          <EntitySet Name="autores" EntityType="Self.autores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Autores_Has_Libros" EntityType="Self.Autores_Has_Libros" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Editoriales" EntityType="Self.Editoriales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Libros" EntityType="Self.Libros" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Autores_Has_Libros_autores" Association="Self.FK_Autores_Has_Libros_autores">
+            <End Role="autores" EntitySet="autores" />
+            <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Autores_Has_Libros_Libros" Association="Self.FK_Autores_Has_Libros_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Libros_Editoriales" Association="Self.FK_Libros_Editoriales">
+            <End Role="Editoriales" EntitySet="Editoriales" />
+            <End Role="Libros" EntitySet="Libros" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TravelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="autores">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombres" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Autores_Has_Libros" Relationship="Self.FK_Autores_Has_Libros_autores" FromRole="autores" ToRole="Autores_Has_Libros" />
+        </EntityType>
+        <EntityType Name="Autores_Has_Libros">
+          <Key>
+            <PropertyRef Name="IdAutorLibro" />
+          </Key>
+          <Property Name="IdAutorLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Autor" Type="Int32" />
+          <Property Name="Id_Libro" Type="Int32" />
+          <NavigationProperty Name="autores" Relationship="Self.FK_Autores_Has_Libros_autores" FromRole="Autores_Has_Libros" ToRole="autores" />
+          <NavigationProperty Name="Libros" Relationship="Self.FK_Autores_Has_Libros_Libros" FromRole="Autores_Has_Libros" ToRole="Libros" />
+        </EntityType>
+        <EntityType Name="Editoriales">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Sede" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Libros" Relationship="Self.FK_Libros_Editoriales" FromRole="Editoriales" ToRole="Libros" />
+        </EntityType>
+        <EntityType Name="Libros">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdEditorial" Type="Int32" />
+          <Property Name="Titulo" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Sinopsis" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="NPaginas" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Autores_Has_Libros" Relationship="Self.FK_Autores_Has_Libros_Libros" FromRole="Libros" ToRole="Autores_Has_Libros" />
+          <NavigationProperty Name="Editoriales" Relationship="Self.FK_Libros_Editoriales" FromRole="Libros" ToRole="Editoriales" />
+        </EntityType>
+        <Association Name="FK_Autores_Has_Libros_autores">
+          <End Role="autores" Type="Self.autores" Multiplicity="0..1" />
+          <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="autores">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Autores_Has_Libros">
+              <PropertyRef Name="Id_Autor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Autores_Has_Libros_Libros">
+          <End Role="Libros" Type="Self.Libros" Multiplicity="0..1" />
+          <End Role="Autores_Has_Libros" Type="Self.Autores_Has_Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="Autores_Has_Libros">
+              <PropertyRef Name="Id_Libro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Libros_Editoriales">
+          <End Role="Editoriales" Type="Self.Editoriales" Multiplicity="0..1" />
+          <End Role="Libros" Type="Self.Libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editoriales">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libros">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TraveEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="autores" EntityType="Self.autores" />
+          <EntitySet Name="Autores_Has_Libros" EntityType="Self.Autores_Has_Libros" />
+          <EntitySet Name="Editoriales" EntityType="Self.Editoriales" />
+          <EntitySet Name="Libros" EntityType="Self.Libros" />
+          <AssociationSet Name="FK_Autores_Has_Libros_autores" Association="Self.FK_Autores_Has_Libros_autores">
+            <End Role="autores" EntitySet="autores" />
+            <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Autores_Has_Libros_Libros" Association="Self.FK_Autores_Has_Libros_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="Autores_Has_Libros" EntitySet="Autores_Has_Libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Libros_Editoriales" Association="Self.FK_Libros_Editoriales">
+            <End Role="Editoriales" EntitySet="Editoriales" />
+            <End Role="Libros" EntitySet="Libros" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TravelModelStoreContainer" CdmEntityContainer="TraveEntities">
+          <EntitySetMapping Name="autores">
+            <EntityTypeMapping TypeName="TravelModel.autores">
+              <MappingFragment StoreEntitySet="autores">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Autores_Has_Libros">
+            <EntityTypeMapping TypeName="TravelModel.Autores_Has_Libros">
+              <MappingFragment StoreEntitySet="Autores_Has_Libros">
+                <ScalarProperty Name="IdAutorLibro" ColumnName="IdAutorLibro" />
+                <ScalarProperty Name="Id_Autor" ColumnName="Id_Autor" />
+                <ScalarProperty Name="Id_Libro" ColumnName="Id_Libro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editoriales">
+            <EntityTypeMapping TypeName="TravelModel.Editoriales">
+              <MappingFragment StoreEntitySet="Editoriales">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Sede" ColumnName="Sede" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libros">
+            <EntityTypeMapping TypeName="TravelModel.Libros">
+              <MappingFragment StoreEntitySet="Libros">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Sinopsis" ColumnName="Sinopsis" />
+                <ScalarProperty Name="NPaginas" ColumnName="NPaginas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
